@@ -1,0 +1,242 @@
+pipeline:
+  name: cicd-pipeline
+  identifier: cicdpipeline
+  projectIdentifier: mymodernapp
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: gitrepoconnector
+        repoName: vks-gitops-demo
+        build: <+input>
+  stages:
+    - stage:
+        name: build and push
+        identifier: build_and_push
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/adservice
+                    tags:
+                      - <+pipeline.executionId>
+                    caching: true
+                    dockerfile: ./microservices-demo/src/adservice/Dockerfile
+                    context: ./microservices-demo/src/adservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_2
+                  identifier: BuildAndPushDockerRegistry_2
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/cartservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/cartservice/src/Dockerfile
+                    context: ./microservices-demo/src/cartservice/src
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_3
+                  identifier: BuildAndPushDockerRegistry_3
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/checkoutservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/checkoutservice/Dockerfile
+                    context: ./microservices-demo/src/checkoutservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_4
+                  identifier: BuildAndPushDockerRegistry_4
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/currencyservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/currencyservice/Dockerfile
+                    context: ./microservices-demo/src/currencyservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_5
+                  identifier: BuildAndPushDockerRegistry_5
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/emailservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/emailservice/Dockerfile
+                    context: ./microservices-demo/src/emailservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_6
+                  identifier: BuildAndPushDockerRegistry_6
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/frontend
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/frontend/Dockerfile
+                    context: ./microservices-demo/src/frontend/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_7
+                  identifier: BuildAndPushDockerRegistry_7
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/loadgenerator
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/loadgenerator/Dockerfile
+                    context: ./microservices-demo/src/loadgenerator/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_8
+                  identifier: BuildAndPushDockerRegistry_8
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/paymentservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/paymentservice/Dockerfile
+                    context: ./microservices-demo/src/paymentservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_9
+                  identifier: BuildAndPushDockerRegistry_9
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/productcatalogservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/productcatalogservice/Dockerfile
+                    context: ./microservices-demo/src/productcatalogservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_10
+                  identifier: BuildAndPushDockerRegistry_10
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/recommendationservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/recommendationservice/Dockerfile
+                    context: ./microservices-demo/src/recommendationservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_11
+                  identifier: BuildAndPushDockerRegistry_11
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/shippingservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/shippingservice/Dockerfile
+                    context: ./microservices-demo/src/shippingservice/
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_12
+                  identifier: BuildAndPushDockerRegistry_12
+                  spec:
+                    connectorRef: quayrepo
+                    repo: quay.io/rahulk10/shoppingassistantservice
+                    tags:
+                      - <+pipeline.executionId>
+                    dockerfile: ./microservices-demo/src/shoppingassistantservice/Dockerfile
+                    context: ./microservices-demo/src/shoppingassistantservice/
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Bash
+                    command: rm -rf /harness/*
+              - step:
+                  type: GitClone
+                  name: GitClone_1
+                  identifier: GitClone_1
+                  spec:
+                    connectorRef: gitrepoconnector
+                    repoName: helm-charts
+                    build:
+                      type: branch
+                      spec:
+                        branch: main
+              - step:
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Bash
+                    command: |-
+                      cd /harness/helm-charts
+                      git config user.name "Harness CI"
+                      git config user.email "ci@example.com"
+                      sed -i "s/tag: \".*\"/tag: \"<+pipeline.executionId>\"/g" values-prod.yaml
+
+                      git add values-prod.yaml
+                      git commit -m "Update image tag to <+pipeline.executionId> via Harness CI"
+                      git push https://${GITHUB_TOKEN}@github.com/rahulk010/helm-charts.git main
+                    envVariables:
+                      GITHUB_TOKEN: <+secrets.getValue("github-pat-token")>
+                  description: Update helm chart
+    - stage:
+        name: Deploy
+        identifier: Deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: appdeployservice
+          environment:
+            environmentRef: prodenv
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: vkscluster
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+            rollbackSteps:
+              - step:
+                  name: Rollback Rollout Deployment
+                  identifier: rollbackRolloutDeployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec:
+                    pruningEnabled: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
